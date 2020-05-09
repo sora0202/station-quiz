@@ -1,36 +1,28 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-card>
-      <v-card-title>
+  <v-container>
+    <v-row>
+      <v-col align="center">
         <div class="display-3">駅名クイズ</div>
-      </v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col>
-            <div class="description">
-              駅名をもとに、それがどの路線のものか当ててもらうクイズです。<br />
-              1問あたりの制限時間は10秒です。問題数は下記から選ぶことができます。
-            </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-select v-model="selected" :items="questions" label="問題数">
-            </v-select>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <v-row
-          ><v-col align="end">
-            <v-btn @click="onClickQuizStartBtn">
-              クイズを始める
-            </v-btn></v-col
-          ></v-row
-        >
-      </v-card-actions>
-    </v-card>
-  </v-layout>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col align="center">
+        駅名をもとに、それがどの路線のものか当ててもらうクイズです。<br />
+        1問あたりの制限時間は10秒です。問題数は下記から選ぶことができます。
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="2">
+        <v-select v-model="selected" :items="questions" label="問題数">
+        </v-select>
+      </v-col>
+      <v-col cols="2"
+        ><v-btn id="start-btn" color="primary" @click="onClickQuizStartBtn">
+          クイズを始める
+        </v-btn></v-col
+      >
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -49,4 +41,8 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#start-btn {
+  margin-top: 10px;
+}
+</style>

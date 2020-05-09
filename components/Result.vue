@@ -1,33 +1,38 @@
 <template>
   <v-card>
-    <v-container fluid class="container">
-      <v-row>
-        <v-col>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>正解</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(answer, index) in answers" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ answer.isCorrect ? '○' : '×' }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col align="end">
-          <span class="display-1">{{ answers.length }} 問</span>中、
-          <span class="display-1 red--text">{{ correctNum }}問</span>正解
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-card-title>
+      クイズ終了！
+    </v-card-title>
+    <v-card-text>
+      <v-container fluid class="container">
+        <v-row>
+          <v-col>
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>正解</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(answer, index) in answers" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ answer.isCorrect ? '○' : '×' }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col align="end">
+            <span class="display-1">{{ answers.length }} 問</span>中、
+            <span class="display-1 red--text">{{ correctNum }}問</span>正解
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card-text>
   </v-card>
 </template>
 

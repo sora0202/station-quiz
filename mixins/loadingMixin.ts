@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      loadingTime: 3000
+      loadingTime: 100
     }
   },
   async mounted() {

@@ -1,9 +1,19 @@
 <template>
   <v-card>
     <v-card-text>
+      <v-progress-circular
+        :rotate="-90"
+        :size="70"
+        :width="5"
+        :value="remainingTime_sec * 10"
+        color="primary"
+        id="timer"
+      >
+        {{ remainingTime_sec }}
+      </v-progress-circular>
       <div class="question-container">
         <v-row>
-          <v-col cols="10">
+          <v-col>
             <div>
               <span class="station-name display-2">
                 {{ question.station_name }}
@@ -11,14 +21,13 @@
               駅は何線の駅でしょうか。
             </div>
           </v-col>
-          <v-col cols="2" align="end"> </v-col>
         </v-row>
         <v-row> </v-row>
       </div>
 
       <v-row>
-        <v-col>
-          <div v-if="!isAnswered" class="choices answer">
+        <v-col align="center">
+          <div v-if="!isAnswered" class="choices answer center">
             <v-radio-group v-model="selected" class="choice" row>
               <v-radio
                 v-for="(c, index) in choice.choice"
@@ -58,18 +67,8 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-row>
-        <v-col>
-          <v-progress-circular
-            :rotate="-90"
-            :size="70"
-            :width="5"
-            :value="remainingTime_sec * 10"
-            color="primary"
-          >
-            {{ remainingTime_sec }}
-          </v-progress-circular>
-        </v-col>
+      <v-row justify="end">
+        <v-col> </v-col>
         <v-col align="end">
           <v-btn
             v-if="!isAnswered"
@@ -106,11 +105,17 @@ export default {
   props: {
     q: Object as PropType<Quiz>
   },
+  computed: {
+    isTimeUp() {
+      return this.remainingTime_sec === 0
+    }
+  },
   data() {
     const question: Station = this.q.question
     const choice: Choice = this.q.choice
 
     return {
+      timer: null,
       isAnswered: false,
       isCorrect: false,
       answer: {} as Answer,
@@ -121,16 +126,26 @@ export default {
       remainingTime_sec: 10 as number
     }
   },
+  watch: {
+    isTimeUp(v) {
+      if (!v) {
+        return
+      }
+      this.onAnswer()
+    }
+  },
   mounted() {
     this.startTimer()
   },
   methods: {
     startTimer() {
-      setInterval(() => {
+      this.timer = setInterval(() => {
         this.remainingTime_sec -= 1
       }, 1000)
     },
     async onAnswer() {
+      console.log(this.timer)
+      clearInterval(this.timer)
       this.answer = {
         question: this.question,
         answer: this.choice.choice[this.selected]
@@ -152,6 +167,10 @@ export default {
 </script>
 
 <style lang="scss">
+#timer {
+  position: absolute;
+  top: 50px;
+}
 #circle-icon {
   font-size: 120px;
   color: palevioletred;
