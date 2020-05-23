@@ -37,9 +37,11 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <div v-if="isLoggedIn">
+        <span>ログイン中:</span>
+        <span>{{ user.email }}</span>
+      </div>
+      <v-btn v-if="isLoggedIn" text @click="logout">ログアウト</v-btn>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -50,9 +52,7 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-icon light>mdi-repeat</v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
@@ -64,30 +64,61 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { mapState, mapGetters, mapActions } from 'vuex'
+import firebase from '~/plugins/firebase'
+
 export default {
   data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'トップページ',
-          to: '/'
-        },
-        {
-          icon: 'mdi-help',
-          title: '駅名クイズ',
-          to: '/quiz/top'
-        }
-      ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: '駅名クイズ'
+      title: ''
     }
+  },
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters(['isLoggedIn']),
+    items() {
+      const items = []
+
+      items.push(
+        ...[
+          {
+            icon: 'mdi-apps',
+            title: 'トップページ',
+            to: '/'
+          },
+          {
+            icon: 'mdi-account-plus',
+            title: 'ユーザ登録',
+            to: '/signup'
+          }
+        ]
+      )
+
+      if (this.isLoggedIn) {
+        items.push({
+          icon: 'mdi-help',
+          title: '駅名クイズ',
+          to: '/quiz/top'
+        })
+      }
+
+      return items
+    }
+  },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.setUser(user)
+    })
+  },
+  methods: {
+    ...mapActions(['setUser', 'logout'])
   }
 }
 </script>
