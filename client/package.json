@@ -19,7 +19,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "chart.js": "^2.9.3",
     "firebase": "^7.14.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "nuxt": "^2.0.0",
     "vue-chartjs": "^3.5.0",
     "vuex-module-decorators": "^0.17.0",
